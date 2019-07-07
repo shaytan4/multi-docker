@@ -1,0 +1,25 @@
+language: generic
+sudo: required
+services:
+  - docker
+
+
+before_install:
+  - docker build -t kos/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+#  - docker run kos/react-test npm test -- --coverage
+  - docker run -e CI=true kos/react-test npm test
+
+after_success:
+  - docker build -t kos/multi-client ./client
+  - docker build -t kos/multi-nginx ./nginx
+  - docker build -t kos/multi-server ./server
+  - docker build -t kos/multi-worker ./worker
+  # Log in to the docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Take those images and push them to docker hub
+  - docker push kos/multi-client
+  - docker push kos/multi-nginx
+  - docker push kos/multi-server
+  - docker push kos/multi-worker
