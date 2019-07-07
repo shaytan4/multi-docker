@@ -12,14 +12,14 @@ script:
   - docker run -e CI=true kos/react-test npm test
 
 after_success:
-  - docker build -t kos/multi-client ./client
-  - docker build -t kos/multi-nginx ./nginx
-  - docker build -t kos/multi-server ./server
-  - docker build -t kos/multi-worker ./worker
+  - docker build -t shaytan4/multi-client ./client
+  - docker build -t shaytan4/multi-nginx ./nginx
+  - docker build -t shaytan4/multi-server ./server
+  - docker build -t shaytan4/multi-worker ./worker
   # Log in to the docker CLI
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   # Take those images and push them to docker hub
-  - docker push kos/multi-client
-  - docker push kos/multi-nginx
-  - docker push kos/multi-server
-  - docker push kos/multi-worker
+  - docker push shaytan4/multi-client
+  - docker push shaytan4/multi-nginx
+  - docker push shaytan4/multi-server
+  - docker push shaytan4/multi-worker
